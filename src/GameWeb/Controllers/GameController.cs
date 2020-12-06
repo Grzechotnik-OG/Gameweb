@@ -54,8 +54,18 @@ namespace GameWeb.Controllers {
 		public void DeleteReview() {
 			throw new System.NotImplementedException("Not implemented");
 		}
-		public void UpdateGameInfo() {
-			throw new System.NotImplementedException("Not implemented");
+		[HttpPut("games/{id}")]
+		public async Task<IActionResult> UpdateGameInfo(long id,Game game) {
+
+			if(id != game.ID){
+				return BadRequest();
+			}
+			try{
+				return Ok(await _gamesRepository.UpdateGame(id,game));
+			}
+			catch(Exception e){
+				return NotFound(e.Message);
+			}
 		}
 		public void AddRating() {
 			throw new System.NotImplementedException("Not implemented");
