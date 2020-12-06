@@ -1,4 +1,5 @@
 using GameWeb.Models;
+using GameWeb.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,9 @@ namespace GameWeb
             services.AddControllers();
 
             services.AddDbContext<Context>(opt => opt.UseSqlite("Data Source=gameweb.db"));
+
+            services.AddScoped<IGamesRepository, GamesRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
