@@ -35,6 +35,16 @@ namespace GameWeb.Controllers {
 		public async Task<long> AddGame(Game game) {
 			return await _gamesRepository.AddGame(game);
 		}
+		[HttpDelete("games/{id}")]
+		public async Task<IActionResult> DeleteGame(long id) {
+			try{
+				await _gamesRepository.DeleteGame(id);
+				return NoContent();
+			}
+			catch(Exception e){
+				return NotFound(e.Message);
+			}
+		}
 		public void AddReview() {
 			throw new System.NotImplementedException("Not implemented");
 		}

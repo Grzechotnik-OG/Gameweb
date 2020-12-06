@@ -28,5 +28,12 @@ namespace GameWeb.Repositories
             }
             return result;
         }
+
+        public async Task<Game> DeleteGame(long id)
+        {
+            var result = _context.Games.Remove(await GetGameById(id));
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
     }
 }
