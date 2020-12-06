@@ -1,14 +1,17 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using GameWeb.Models;
+using GameWeb.Repositories;
 
 namespace GameWeb.Controllers {
 	public class UserController : ControllerBase{
 		private readonly Context _context;
+		private readonly IUsersRepository _usersRepository;
 
-		public UserController(Context context)
+		public UserController(Context context, IUsersRepository usersRepository)
         {
             _context = context;
+			_usersRepository = usersRepository;
         }
 		public void SignIn() {
 			throw new System.NotImplementedException("Not implemented");
