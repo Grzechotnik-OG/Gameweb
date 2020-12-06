@@ -7,5 +7,6 @@ namespace GameWeb.Repositories
     {
         Task<long> AddGame(Game game);
         Task<Game> GetGameById(long id);
+        Task<Game> DeleteGame(long id);
     }
 }
