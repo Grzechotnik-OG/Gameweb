@@ -31,9 +31,25 @@ namespace GameWeb.Controllers {
 		public void SearchByGenre() {
 			throw new System.NotImplementedException("Not implemented");
 		}
+
 		[HttpPost("games")]
-		public async Task<long> AddGame(Game game) {
+		public async Task<long> AddGame(Game game) 
+		{
 			return await _gamesRepository.AddGame(game);
+		}
+
+		[HttpPut("games/{id}")]
+		public async Task<IActionResult> UpdateGameInfo(long id,Game game) {
+
+			if(id != game.GameId){
+				return BadRequest();
+			}
+			try{
+				return Ok(await _gamesRepository.UpdateGame(id,game));
+			}
+			catch(Exception e){
+				return NotFound(e.Message);
+			}
 		}
 		[HttpDelete("games/{id}")]
 		public async Task<IActionResult> DeleteGame(long id) {
@@ -45,28 +61,70 @@ namespace GameWeb.Controllers {
 				return NotFound(e.Message);
 			}
 		}
-		public void AddReview() {
-			throw new System.NotImplementedException("Not implemented");
-		}
-		public void UpdateReview() {
-			throw new System.NotImplementedException("Not implemented");
-		}
-		public void DeleteReview() {
-			throw new System.NotImplementedException("Not implemented");
-		}
-		[HttpPut("games/{id}")]
-		public async Task<IActionResult> UpdateGameInfo(long id,Game game) {
-
-			if(id != game.ID){
-				return BadRequest();
+		[HttpPost("games/{gameId}/reviews")]
+		public async Task<IActionResult> AddReview(Review review, long gameId, long userId)
+		{
+			try
+			{
+				var result = await _gamesRepository.AddReview(review, gameId, userId);
+				return Ok(result);
 			}
+			catch(Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+
+		[HttpGet("games/{id}/reviews")]
+		public async Task<IActionResult> GetReviewsByGameId(long id) {
+			try
+			{
+				var result = await _gamesRepository.GetReviewsByGameId(id);
+				return Ok(result);
+			}
+			catch(Exception e)
+			{
+				return NotFound(e.Message);
+			}
+		}
+
+		[HttpGet("games/{gameId}/reviews/{id}")]
+		public async Task<IActionResult> GetReviewById(long id) {
+			try
+			{
+				var result = await _gamesRepository.GetReviewById(id);
+				return Ok(result);
+			}
+			catch(Exception e)
+			{
+				return NotFound(e.Message);
+			}
+		}
+
+		[HttpPut("games/{gameId}/reviews/{reviewId}")]
+		public async Task<IActionResult> UpdateReviewById(long reviewId, ReviewUpdateDTO review) 
+		{
 			try{
-				return Ok(await _gamesRepository.UpdateGame(id,game));
+				return Ok(await _gamesRepository.UpdateReviewById(review, reviewId));
 			}
 			catch(Exception e){
 				return NotFound(e.Message);
 			}
 		}
+
+		[HttpDelete("games/{gameId}/reviews/{reviewId}")]
+		public async Task<IActionResult> DeleteReview(long reviewId) 
+		{
+			try
+			{
+				await _gamesRepository.DeleteReviewById(reviewId);
+				return NoContent();
+			}
+			catch(Exception e){
+				return NotFound(e.Message);
+			}
+		}
+		
 		public void AddRating() {
 			throw new System.NotImplementedException("Not implemented");
 		}
