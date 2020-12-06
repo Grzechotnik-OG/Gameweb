@@ -35,5 +35,12 @@ namespace GameWeb.Repositories
             await _context.SaveChangesAsync();
             return result.Entity;
         }
+
+        public async Task<Game> UpdateGame(long id, Game game)
+        {
+            var result = _context.Games.Update(game);
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
     }
 }
