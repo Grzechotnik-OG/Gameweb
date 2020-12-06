@@ -7,11 +7,11 @@ namespace GameWeb.Models
 	{
 		public Context(DbContextOptions<Context> options): base(options)
     	{ }
-		private DbSet<Game> Games { get; set; }
-		private DbSet<Developer> Developers { get; set; }
-		private DbSet<Review> Reviews { get; set; }
-		private DbSet<User> Users { get; set; }
-		private DbSet<Rating> Ratings{ get; set; }
+		public DbSet<Game> Games { get; set; }
+		public DbSet<Developer> Developers { get; set; }
+		public DbSet<Review> Reviews { get; set; }
+		public DbSet<User> Users { get; set; }
+		public DbSet<Rating> Ratings { get; set; }
 
 	}
 }
