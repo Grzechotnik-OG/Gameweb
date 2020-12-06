@@ -2,11 +2,11 @@ using System;
 
 namespace GameWeb.Models {
 	public class Game {
-		public string ID;
-		public string Name;
-		public DateTime ReleaseDate;
-		public Developer Developer;
-		public GameGenreEnum Genre;
+		public string ID { get; set; }
+		public string Name { get; set; }
+		public DateTime ReleaseDate { get; set; }
+		public Developer Developer { get; set; }
+		public GameGenreEnum Genre { get; set; }
 
 	}
 

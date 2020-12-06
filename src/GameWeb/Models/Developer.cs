@@ -1,10 +1,12 @@
 using System;
 
-namespace GameWeb.Models {
-	public class Developer {
-		public string ID;
-		public string Name;
-		public DateTime EstablishmentDate;
+namespace GameWeb.Models 
+{
+	public class Developer 
+	{
+		public string ID { get; set; }
+		public string Name { get; set; }
+		public DateTime EstablishmentDate { get; set; }
 
 	}
 
