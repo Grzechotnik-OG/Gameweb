@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using GameWeb.Models;
 
 namespace GameWeb.Repositories
@@ -9,5 +11,12 @@ namespace GameWeb.Repositories
         {
             _context = context;
         }
+
+        public async Task<TokenDTO> Login(LoginDTO login)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
     }
 }

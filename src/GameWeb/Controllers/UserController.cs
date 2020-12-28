@@ -13,9 +13,11 @@ namespace GameWeb.Controllers {
             _context = context;
 			_usersRepository = usersRepository;
         }
+		[HttpPost("login")]
 		public void SignIn() {
 			throw new System.NotImplementedException("Not implemented");
 		}
+		[HttpPost("login")]
 		public void SignUp() {
 			throw new System.NotImplementedException("Not implemented");
 		}
