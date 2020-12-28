@@ -2,7 +2,7 @@ namespace GameWeb.Models
 {
     public class LoginDTO
     {
-        string UserName { get; set; }
-        string Password { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }
