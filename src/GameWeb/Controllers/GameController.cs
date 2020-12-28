@@ -102,7 +102,7 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpPut("games/{gameId}/reviews/{reviewId}")]
-		public async Task<IActionResult> UpdateReviewById(long reviewId, ReviewUpdateDTO review) 
+		public async Task<IActionResult> UpdateReviewById(long reviewId, ReviewUpdateDTO review)
 		{
 			try{
 				return Ok(await _gamesRepository.UpdateReviewById(review, reviewId));
@@ -113,7 +113,7 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpDelete("games/{gameId}/reviews/{reviewId}")]
-		public async Task<IActionResult> DeleteReview(long reviewId) 
+		public async Task<IActionResult> DeleteReview(long reviewId)
 		{
 			try
 			{
@@ -124,7 +124,7 @@ namespace GameWeb.Controllers {
 				return NotFound(e.Message);
 			}
 		}
-		
+
 		public void AddRating() {
 			throw new System.NotImplementedException("Not implemented");
 		}
