@@ -8,8 +8,8 @@ namespace GameWeb.Repositories
         bool ValidateCredentials(LoginDTO login);
         Task<User> GetUserById(long id);
         User GetUserByUserName(string UserName);
-        User AddUser(User user);
-        void RemoveUserById(long id);
-        User UpdateUser(long id, User newUser);
+        Task<long> AddUser(User user);
+        Task<User> RemoveUserById(long id);
+        Task<User> UpdateUser(User newUser);
     }
 }

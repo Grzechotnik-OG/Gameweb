@@ -45,8 +45,20 @@ namespace GameWeb.Repositories
             }
             return result;
         }
-        public User AddUser(User user){throw new System.NotImplementedException("Not implemented");}
-        public void RemoveUserById(long id){throw new System.NotImplementedException("Not implemented");}
-        public User UpdateUser(long id, User newUser){throw new System.NotImplementedException("Not implemented");}
+        public async Task<long> AddUser(User user){
+            var result = await _context.AddAsync<User>(user);
+            await _context.SaveChangesAsync();
+            return result.Entity.UserId;
+        }
+        public async Task<User> RemoveUserById(long id){
+            var result = _context.Users.Remove(await GetUserById(id));
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
+        public async Task<User> UpdateUser(User newUser){
+            var result = _context.Users.Update(newUser);
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
     }
 }

@@ -61,7 +61,7 @@ namespace GameWeb.Controllers {
 		public IActionResult UpdateUser(User user)
 		{
 			var id = Convert.ToInt64(User.Identity.Name);
-			return Ok(_usersRepository.UpdateUser(id, user));
+			return Ok(_usersRepository.UpdateUser(user));
 		}
 	}
 }
