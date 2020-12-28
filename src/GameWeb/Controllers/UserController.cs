@@ -21,18 +21,18 @@ namespace GameWeb.Controllers {
 		[HttpPost("login")]
 		public async Task<IActionResult> SignIn(LoginDTO login)
 		{
-			if(!(await _usersRepository.ValidateCredentials(login)))
+			if(!(_usersRepository.ValidateCredentials(login)))
 			{
 				return Unauthorized();
 			}
 			var user = _usersRepository.GetUserByUserName(login.UserName);
-			return Ok(await _authService.GenerateToken(user));
+			return Ok(_authService.GenerateToken(user));
 		}
 
 		[HttpPost("signUp")]
 		public async Task<IActionResult> SignUp(User user)
 		{
-			return Ok(await _usersRepository.AddUser(user));
+			return Ok(_usersRepository.AddUser(user));
 		}
 
 		[HttpPost("{id}")]
@@ -53,15 +53,15 @@ namespace GameWeb.Controllers {
 		public async Task<IActionResult> Delete()
 		{
 			Logout();
-			await _usersRepository.RemoveUserById(User.Identity.Name);
+			_usersRepository.RemoveUserById(Convert.ToInt64(User.Identity.Name));
 			return NoContent();
 		}
 
 		[HttpPut("update")]
 		public async Task<IActionResult> UpdateUser(User user)
 		{
-			var id = User.Identity.Name;
-			return Ok(await _usersRepository.UpdateUser(id, user));
+			var id = Convert.ToInt64(User.Identity.Name);
+			return Ok(_usersRepository.UpdateUser(id, user));
 		}
 	}
 }
