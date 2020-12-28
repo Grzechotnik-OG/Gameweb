@@ -45,8 +45,23 @@ namespace GameWeb.Repositories
             }
             return result;
         }
-        public async Task<long> AddUser(User user){
-            var result = await _context.AddAsync<User>(user);
+        public async Task<long> AddUser(User user, string password)
+        {
+            var salt = new byte[128 / 8];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+            string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA1, 10000, 256/8));
+
+            User entityUser = new User()
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Salt = salt,
+                PasswordHash = hashedPwd
+            };
+            var result = await _context.AddAsync<User>(entityUser);
             await _context.SaveChangesAsync();
             return result.Entity.UserId;
         }

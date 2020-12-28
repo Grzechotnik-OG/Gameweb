@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using GameWeb.Models;
 using GameWeb.Repositories;
+using GameWeb.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,11 @@ namespace GameWeb
         {
             JWTConfig jwtConfig = new JWTConfig() //Zrób to inaczej
             {
-                Secret = "asdasdasd"
+                AccessTokenExpiration = 5,
+                RefreshTokenExpiration = 10,
+                Issuer = "https://localhost:5001/",
+                Audience = "https://localhost:5001/",
+                Secret = "SWRlYWx5IHNhIGphayBnd2lhemR5IC0gbmllIG1vem5hIGljaCBvc2lhZ25hYywgYWxlIG1vem5hIHNpZSBuaW1pIGtpZXJvd2FjLg0K"
             };
             services.AddControllers();
 
@@ -33,27 +38,30 @@ namespace GameWeb
 
             services.AddScoped<IGamesRepository, GamesRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddSingleton<JWTConfig>(jwtConfig);
 
-            services.AddAuthentication(x =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;         //zeby sie dalo bez https
-                x.SaveToken = true;                     //żeby można było uzyskać token z kontrolerów
-                x.TokenValidationParameters = new TokenValidationParameters()
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = jwtConfig.Issuer,     //dowiedzieć się co to
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Secret)),//popraw to
-                    ValidAudience = jwtConfig.Audience, //dowiedzieć się co to
-                    ValidateAudience = true,//?
+                    ValidateAudience = true,
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(5)
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtConfig.Issuer,
+                    ValidAudience = jwtConfig.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Secret)),
+                    ClockSkew = TimeSpan.Zero
                 };
+            });
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy(Policies.Admin, Policies.AdminPolicy());
+                config.AddPolicy(Policies.User, Policies.UserPolicy());
             });
         }
 

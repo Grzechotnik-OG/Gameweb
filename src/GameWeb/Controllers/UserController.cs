@@ -4,8 +4,11 @@ using GameWeb.Repositories;
 using System.Threading.Tasks;
 using GameWeb.Services;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameWeb.Controllers {
+	[Route("api/v1/users")]
+    [ApiController]
 	public class UserController : ControllerBase{
 		private readonly Context _context;
 		private readonly IUsersRepository _usersRepository;
@@ -30,18 +33,19 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpPost("signUp")]
-		public IActionResult SignUp(User user)
+		public IActionResult SignUp([FromBody]User user, string password)
 		{
-			return Ok(_usersRepository.AddUser(user));
+			return Ok(_usersRepository.AddUser(user, password));
 		}
 
-		[HttpPost("{id}")]
+		[HttpGet("{id}")]
 		public async Task<IActionResult> GetUser(long id)
 		{
 			return Ok(await _usersRepository.GetUserById(id));
 		}
 
 		[HttpPost("logout")]
+		[Authorize]
 		public IActionResult Logout()
 		{
 			var userName = Convert.ToInt64(User.Identity.Name);

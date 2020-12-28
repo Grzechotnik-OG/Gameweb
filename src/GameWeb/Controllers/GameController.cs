@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using GameWeb.Models;
 using GameWeb.Repositories;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameWeb.Controllers {
 	[Route("api/v1")]
@@ -17,6 +18,7 @@ namespace GameWeb.Controllers {
 			_gamesRepository = gamesRepository;
         }
 		[HttpGet("games/{id}")]
+		[Authorize]
 		public async Task<IActionResult> GetGame(long id) {
 			try
 			{
