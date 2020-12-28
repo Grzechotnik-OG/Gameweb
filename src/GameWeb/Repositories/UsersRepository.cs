@@ -12,11 +12,14 @@ namespace GameWeb.Repositories
             _context = context;
         }
 
-        public async Task<TokenDTO> Login(LoginDTO login)
+        public async Task<bool> ValidateCredentials(LoginDTO login)
         {
             throw new System.NotImplementedException();
         }
-
+        public async Task<User> GetUserById(long id)
+        {
+            throw new System.NotImplementedException();
+        }
 
     }
 }
