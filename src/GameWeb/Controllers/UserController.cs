@@ -19,7 +19,7 @@ namespace GameWeb.Controllers {
         }
 
 		[HttpPost("login")]
-		public async Task<IActionResult> SignIn(LoginDTO login)
+		public IActionResult SignIn(LoginDTO login)
 		{
 			if(!(_usersRepository.ValidateCredentials(login)))
 			{
@@ -30,7 +30,7 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpPost("signUp")]
-		public async Task<IActionResult> SignUp(User user)
+		public IActionResult SignUp(User user)
 		{
 			return Ok(_usersRepository.AddUser(user));
 		}
@@ -50,7 +50,7 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpDelete("delete")]
-		public async Task<IActionResult> Delete()
+		public IActionResult Delete()
 		{
 			Logout();
 			_usersRepository.RemoveUserById(Convert.ToInt64(User.Identity.Name));
@@ -58,7 +58,7 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpPut("update")]
-		public async Task<IActionResult> UpdateUser(User user)
+		public IActionResult UpdateUser(User user)
 		{
 			var id = Convert.ToInt64(User.Identity.Name);
 			return Ok(_usersRepository.UpdateUser(id, user));
