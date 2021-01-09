@@ -1,8 +1,10 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace GameWeb.Models {
-	public class Review {
+namespace GameWeb.Models
+{
+	public class Review
+	{
 		public long ReviewId { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
