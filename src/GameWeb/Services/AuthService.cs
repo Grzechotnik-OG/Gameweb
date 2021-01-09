@@ -15,31 +15,30 @@ namespace GameWeb.Services
         {
             _jwtConfig = jwtConfig;
         }
-        public TokenDTO GenerateToken(User user)
+        public TokenDTO GenerateTokenDTO(User user)
         {
             TokenDTO tokens = new TokenDTO()
             {
-                Token = GenerateToken(user.UserId,_jwtConfig.AccessTokenExpiration)
+                Token = GenerateToken(user)
             };
             return tokens;
         }
 
-        public string GenerateToken(long userId, int expireMinutes = 20)
+        public string GenerateToken(User user)
         {
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Secret));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]{
-                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                //new Claim(“fullName”, userInfo.FullName.ToString()),
-                //new Claim(“role”,userInfo.UserRole), //To mozna wykorzystac później
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                new Claim("role", user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
             var token = new JwtSecurityToken(
                 issuer: _jwtConfig.Issuer,
                 audience: _jwtConfig.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(_jwtConfig.AccessTokenExpiration),
                 signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

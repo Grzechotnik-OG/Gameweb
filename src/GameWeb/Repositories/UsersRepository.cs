@@ -45,21 +45,22 @@ namespace GameWeb.Repositories
             }
             return result;
         }
-        public async Task<long> AddUser(User user, string password)
+        public async Task<long> AddUser(UserSignUpDTO user)
         {
             var salt = new byte[128 / 8];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(salt);
             }
-            string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA1, 10000, 256/8));
+            string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2(user.Password, salt, KeyDerivationPrf.HMACSHA1, 10000, 256/8));
 
             User entityUser = new User()
             {
                 UserName = user.UserName,
                 Email = user.Email,
                 Salt = salt,
-                PasswordHash = hashedPwd
+                PasswordHash = hashedPwd,
+                Role = "User"
             };
             var result = await _context.AddAsync<User>(entityUser);
             await _context.SaveChangesAsync();

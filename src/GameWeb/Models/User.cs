@@ -9,5 +9,6 @@ namespace GameWeb.Models {
 		public string Email { get; set; }
 		public string PasswordHash { get; set; }
 		public byte[] Salt { get; set; }
+		public string Role { get; set; }
 	}
 }

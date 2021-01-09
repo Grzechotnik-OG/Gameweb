@@ -21,7 +21,7 @@ namespace GameWeb.Controllers {
 			_authService = authService;
         }
 
-		[HttpPost("login")]
+		[HttpPost("login")] //brak
 		public IActionResult SignIn(LoginDTO login)
 		{
 			if(!(_usersRepository.ValidateCredentials(login)))
@@ -29,16 +29,16 @@ namespace GameWeb.Controllers {
 				return Unauthorized();
 			}
 			var user = _usersRepository.GetUserByUserName(login.UserName);
-			return Ok(_authService.GenerateToken(user));
+			return Ok(_authService.GenerateTokenDTO(user));
 		}
 
-		[HttpPost("signUp")]
-		public IActionResult SignUp([FromBody]User user, string password)
+		[HttpPost("signUp")] //brak
+		public IActionResult SignUp([FromBody]UserSignUpDTO user)
 		{
-			return Ok(_usersRepository.AddUser(user, password));
+			return Ok(_usersRepository.AddUser(user));
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("{id}")] //brak
 		public async Task<IActionResult> GetUser(long id)
 		{
 			return Ok(await _usersRepository.GetUserById(id));
@@ -53,7 +53,7 @@ namespace GameWeb.Controllers {
 			return Ok();
 		}
 
-		[HttpDelete("delete")]
+		[HttpDelete("delete")] //token zwykly //sprawdzenie uzytkownika
 		public IActionResult Delete()
 		{
 			Logout();
@@ -61,7 +61,7 @@ namespace GameWeb.Controllers {
 			return NoContent();
 		}
 
-		[HttpPut("update")]
+		[HttpPut("update")] //token zwykly //sprawdzenie uzytkownika
 		public IActionResult UpdateUser(User user)
 		{
 			var id = Convert.ToInt64(User.Identity.Name);

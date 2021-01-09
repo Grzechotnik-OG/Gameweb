@@ -4,7 +4,7 @@ namespace GameWeb.Services
 {
     public interface IAuthService
     {
-        TokenDTO GenerateToken(User user);
+        TokenDTO GenerateTokenDTO(User user);
         void RemoveRefreshTokenById(long id);
     }
 }
