@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameWeb.Models
 {
-	public class Context : DbContext 
+	public class Context : DbContext
 	{
 		public Context(DbContextOptions<Context> options): base(options)
     	{ }
@@ -12,11 +12,12 @@ namespace GameWeb.Models
 		public DbSet<Review> Reviews { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Rating> Ratings { get; set; }
+		public DbSet<GameGenre> Genres { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Review>()
 				.HasOne(r => r.Game)
 				.WithMany(g => g.Reviews);
-		}	
+		}
 	}
 }
