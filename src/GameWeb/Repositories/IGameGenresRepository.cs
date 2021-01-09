@@ -1,0 +1,15 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GameWeb.Models;
+
+namespace GameWeb.Repositories
+{
+    public interface IGameGenresRepository
+    {
+        Task<long> AddGenre(string name);
+        List<GameGenre> GetGenres();
+        Task<GameGenre> GetGenreById(long id);
+        Task<GameGenre> UpdateGenre(long id, string name);
+        Task<GameGenre> DeleteGenre(long id);
+    }
+}

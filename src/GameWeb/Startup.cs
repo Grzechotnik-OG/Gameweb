@@ -38,6 +38,9 @@ namespace GameWeb
 
             services.AddScoped<IGamesRepository, GamesRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IGameGenresRepository, GameGenresRepository>();
+            services.AddScoped<IDevelopersRepository, DevelopersRepository>();
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddSingleton<JWTConfig>(jwtConfig);
 
