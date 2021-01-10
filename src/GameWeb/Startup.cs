@@ -41,6 +41,8 @@ namespace GameWeb
             services.AddScoped<IGameGenresRepository, GameGenresRepository>();
             services.AddScoped<IDevelopersRepository, DevelopersRepository>();
 
+            services.AddSwaggerDocument();
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddSingleton<JWTConfig>(jwtConfig);
 
@@ -82,6 +84,9 @@ namespace GameWeb
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {

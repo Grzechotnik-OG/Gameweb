@@ -76,7 +76,7 @@ namespace GameWeb.Controllers
 			}
 		}
 
-        [HttpDelete("games/{id}")]
+        [HttpDelete("genres/{id}")]
         [Authorize(Policy = Policies.Admin)]
 		public async Task<IActionResult> DeleteGenre(long id) {
 			try{
