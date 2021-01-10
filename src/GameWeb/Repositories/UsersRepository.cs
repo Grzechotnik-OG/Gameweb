@@ -45,6 +45,16 @@ namespace GameWeb.Repositories
             }
             return result;
         }
+
+        public User GetUserByRefreshToken(string RefreshToken)
+        {
+            var result = _context.RefreshTokens.Where(a => a.Token == RefreshToken).FirstOrDefault();
+            if(result == null)
+            {
+                throw new System.Exception("Not Found!");
+            }
+            return result.User;
+        }
         public async Task<long> AddUser(UserSignUpDTO user)
         {
             var salt = new byte[128 / 8];

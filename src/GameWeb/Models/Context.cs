@@ -12,6 +12,7 @@ namespace GameWeb.Models
 		public DbSet<Review> Reviews { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Rating> Ratings { get; set; }
+		public DbSet<RefreshToken> RefreshTokens { get; set; }
 		public DbSet<GameGenre> Genres { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
