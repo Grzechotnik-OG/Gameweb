@@ -1,5 +1,5 @@
 using System;
-using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace GameWeb.Models {
 	public class User
@@ -10,5 +10,6 @@ namespace GameWeb.Models {
 		public string PasswordHash { get; set; }
 		public byte[] Salt { get; set; }
 		public string Role { get; set; }
+		public List<RefreshToken> RefreshTokens {get; set;}
 	}
 }

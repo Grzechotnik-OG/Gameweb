@@ -29,7 +29,15 @@ namespace GameWeb.Controllers {
 				return Unauthorized();
 			}
 			var user = _usersRepository.GetUserByUserName(login.UserName);
+			_authService.GenerateRefreshToken(user);
 			return Ok(_authService.GenerateTokenDTO(user));
+		}
+
+		[AllowAnonymous]
+		[HttpPost("refresh-token")]
+		public IActionResult Refresh([FromBody] RefreshTokenDTO refreshToken){
+			if(!ModelState.IsValid) return BadRequest(ModelState);
+			return Ok(_authService.ExchangeRefreshToken(refreshToken));
 		}
 
 		[HttpPost("signUp")] //brak
