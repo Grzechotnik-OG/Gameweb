@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Linq;
 using System.Threading.Tasks;
 using GameWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameWeb.Repositories
 {
@@ -17,7 +18,15 @@ namespace GameWeb.Repositories
 
         public bool ValidateCredentials(LoginDTO login)
         {
-            var user = GetUserByUserName(login.UserName);
+            User user;
+            try
+            {
+                user = GetUserByUserName(login.UserName);
+            }
+            catch(Exception)
+            {
+                return false;
+            }
             string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2(login.Password,user.Salt,KeyDerivationPrf.HMACSHA1,10000, 256/8));
             if(hashedPwd == user.PasswordHash){
                 return true;
@@ -48,7 +57,7 @@ namespace GameWeb.Repositories
 
         public User GetUserByRefreshToken(string RefreshToken)
         {
-            var result = _context.RefreshTokens.Where(a => a.Token == RefreshToken).FirstOrDefault();
+            var result = _context.RefreshTokens.Where(a => a.Token == RefreshToken).Include(r => r.User).FirstOrDefault();
             if(result == null)
             {
                 throw new System.Exception("Not Found!");
@@ -57,6 +66,11 @@ namespace GameWeb.Repositories
         }
         public async Task<long> AddUser(UserSignUpDTO user)
         {
+            var userInDb =_context.Users.Where(x => x.UserName.Equals(user.UserName) || x.Email.Equals(user.Email)).FirstOrDefault();
+            if(userInDb != null)
+            {
+                throw new Exception("User already exists"); // coś tu nie do końca działa
+            }
             var salt = new byte[128 / 8];
             using (var rng = RandomNumberGenerator.Create())
             {
@@ -76,12 +90,15 @@ namespace GameWeb.Repositories
             await _context.SaveChangesAsync();
             return result.Entity.UserId;
         }
-        public async Task<User> RemoveUserById(long id){
-            var result = _context.Users.Remove(await GetUserById(id));
+        public async Task<User> RemoveUserById(long id)
+        {
+            var user = await GetUserById(id);
+            var result = _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return result.Entity;
         }
-        public async Task<User> UpdateUser(User newUser){
+        public async Task<User> UpdateUser(User newUser, long userId)
+        {
             var result = _context.Users.Update(newUser);
             await _context.SaveChangesAsync();
             return result.Entity;

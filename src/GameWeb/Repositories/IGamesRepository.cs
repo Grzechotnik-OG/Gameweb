@@ -6,14 +6,15 @@ namespace GameWeb.Repositories
 {
     public interface IGamesRepository
     {
-        Task<long> AddGame(Game game);
+        Task<long> AddGame(GameDTO game);
         Task<Game> GetGameById(long id);
+        Task<List<Game>> GetGameByGenreId(long genreId);
         Task<Game> DeleteGame(long id);
-        Task<Game> UpdateGame(long id,Game game);
+        Task<Game> UpdateGame(long id, GameDTO game);
         Task<Review> GetReviewById(long id);
-        Task<List<Review>> GetReviewsByGameId(long gameId);
-        Task<long> AddReview(Review review, long gameId, long userId);
-		Task<Review> UpdateReviewById(ReviewUpdateDTO updatedReview, long id);
-		Task<Review> DeleteReviewById(long id);
+        Task<List<Review>> GetReviewsByGameId(long gameId, int page, int limit);
+        Task<long> AddReview(ReviewDTO review, long gameId, long userId);
+		Task<Review> UpdateReviewById(ReviewUpdateDTO updatedReview, long id, long userId);
+		Task<Review> DeleteReviewById(long id, long userId);
     }
 }

@@ -41,9 +41,13 @@ namespace GameWeb.Repositories
             return result;
         }
 
-        public List<GameGenre> GetGenres()
+        public List<GameGenre> GetGenres(int page, int limit)
         {
-            return _context.Genres.ToList();
+            return _context.Genres.ToList()
+                .OrderBy(x => x.Name)
+                .Skip(page * limit)
+                .Take(limit)
+                .ToList();
         }
 
         public async Task<GameGenre> UpdateGenre(long id, string name)

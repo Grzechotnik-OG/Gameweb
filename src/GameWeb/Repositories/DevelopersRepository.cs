@@ -18,7 +18,7 @@ namespace GameWeb.Repositories
             var developerEntity = new Developer()
             {
                 Name = developer.Name,
-                EstablishmentDate = developer.EstablishmentDate
+                EstablishmentYear = developer.EstablishmentYear
             };
             var result = await _context.AddAsync<Developer>(developerEntity);
             await _context.SaveChangesAsync();
@@ -42,16 +42,20 @@ namespace GameWeb.Repositories
             return result;
         }
 
-        public List<Developer> GetDevelopers()
+        public List<Developer> GetDevelopers(int page, int limit)
         {
-            return _context.Developers.ToList();
+            return _context.Developers.ToList()
+                .OrderBy(x => x.Name)
+                .Skip(page * limit)
+                .Take(limit)
+                .ToList();
         }
 
         public async Task<Developer> UpdateDeveloper(long id, DeveloperDTO developer)
         {
             var updatedDeveloper = await GetDeveloperById(id);
             updatedDeveloper.Name = developer.Name;
-            updatedDeveloper.EstablishmentDate = developer.EstablishmentDate;
+            updatedDeveloper.EstablishmentYear = developer.EstablishmentYear;
             var result = _context.Developers.Update(updatedDeveloper);
             await _context.SaveChangesAsync();
             return result.Entity;

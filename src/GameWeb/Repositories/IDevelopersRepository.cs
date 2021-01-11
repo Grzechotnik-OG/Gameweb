@@ -7,7 +7,7 @@ namespace GameWeb.Repositories
     public interface IDevelopersRepository
     {
         Task<long> AddDeveloper(DeveloperDTO developer);
-        List<Developer> GetDevelopers();
+        List<Developer> GetDevelopers(int page, int limit);
         Task<Developer> GetDeveloperById(long id);
         Task<Developer> UpdateDeveloper(long id, DeveloperDTO developer);
         Task<Developer> DeleteDeveloper(long id);

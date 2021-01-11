@@ -11,6 +11,6 @@ namespace GameWeb.Repositories
         User GetUserByRefreshToken(string RefreshToken);
         Task<long> AddUser(UserSignUpDTO user);
         Task<User> RemoveUserById(long id);
-        Task<User> UpdateUser(User newUser);
+        Task<User> UpdateUser(User newUser, long userId);
     }
 }
