@@ -5,7 +5,8 @@ using GameWeb.Repositories;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace GameWeb.Controllers {
+namespace GameWeb.Controllers
+{
 	[Route("api/v1")]
     [ApiController]
 	public class GamesController : ControllerBase
@@ -20,7 +21,8 @@ namespace GameWeb.Controllers {
         }
 
 		[HttpGet("games/{id}")]
-		public async Task<IActionResult> GetGame(long id) {
+		public async Task<IActionResult> GetGame(long id)
+		{
 			try
 			{
 				var result = await _gamesRepository.GetGameById(id);
@@ -33,14 +35,22 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpGet("games/genres/{genreId}")]
-		public void SearchByGenre(long genreId)
+		public async Task<IActionResult> SearchByGenre(long genreId)
 		{
-			throw new System.NotImplementedException("Not implemented");
+			try
+			{
+				var result = await _gamesRepository.GetGameByGenreId(genreId);
+				return Ok(result);
+			}
+			catch(Exception e)
+			{
+				return NotFound(e.Message);
+			}
 		}
 
 		[HttpPost("games")]
 		[Authorize(Policy = Policies.Mod)]
-		public async Task<IActionResult> AddGame(Game game)
+		public async Task<IActionResult> AddGame(GameDTO game)
 		{
 			try
 			{
@@ -54,13 +64,11 @@ namespace GameWeb.Controllers {
 
 		[HttpPut("games/{id}")]
 		[Authorize(Policy = Policies.Mod)]
-		public async Task<IActionResult> UpdateGameInfo(long id,Game game)
+		public async Task<IActionResult> UpdateGameInfo(long id, GameDTO game)
 		{
-			if(id != game.GameId){
-				return BadRequest();
-			}
-			try{
-				return Ok(await _gamesRepository.UpdateGame(id,game));
+			try
+			{
+				return Ok(await _gamesRepository.UpdateGame(id, game));
 			}
 			catch(Exception e){
 				return NotFound(e.Message);
@@ -71,7 +79,8 @@ namespace GameWeb.Controllers {
 		[Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> DeleteGame(long id)
 		{
-			try{
+			try
+			{
 				await _gamesRepository.DeleteGame(id);
 				return NoContent();
 			}

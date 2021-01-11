@@ -6,10 +6,12 @@ using GameWeb.Services;
 using System;
 using Microsoft.AspNetCore.Authorization;
 
-namespace GameWeb.Controllers {
+namespace GameWeb.Controllers
+{
 	[Route("api/v1/users")]
     [ApiController]
-	public class UserController : ControllerBase{
+	public class UserController : ControllerBase
+	{
 		private readonly Context _context;
 		private readonly IUsersRepository _usersRepository;
 		private readonly IAuthService _authService;
@@ -21,7 +23,7 @@ namespace GameWeb.Controllers {
 			_authService = authService;
         }
 
-		[HttpPost("login")] //brak
+		[HttpPost("login")]
 		public IActionResult SignIn(LoginDTO login)
 		{
 			if(!(_usersRepository.ValidateCredentials(login)))
@@ -35,18 +37,26 @@ namespace GameWeb.Controllers {
 
 		[AllowAnonymous]
 		[HttpPost("refresh-token")]
-		public IActionResult Refresh([FromBody] RefreshTokenDTO refreshToken){
+		public IActionResult Refresh([FromBody] RefreshTokenDTO refreshToken)
+		{
 			if(!ModelState.IsValid) return BadRequest(ModelState);
 			return Ok(_authService.ExchangeRefreshToken(refreshToken));
 		}
 
-		[HttpPost("signUp")] //brak
+		[HttpPost("signUp")]
 		public IActionResult SignUp([FromBody]UserSignUpDTO user)
 		{
-			return Ok(_usersRepository.AddUser(user));
+			try
+			{
+				return Ok(_usersRepository.AddUser(user));
+			}
+			catch(Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 		}
 
-		[HttpGet("{id}")] //brak
+		[HttpGet("{id}")]
 		public async Task<IActionResult> GetUser(long id)
 		{
 			return Ok(await _usersRepository.GetUserById(id));
@@ -61,19 +71,21 @@ namespace GameWeb.Controllers {
 			return Ok();
 		}
 
-		[HttpDelete("delete")] //token zwykly //sprawdzenie uzytkownika
+		[HttpDelete("delete")]
+		[Authorize]
 		public IActionResult Delete()
 		{
-			Logout();
+			//Logout();
 			_usersRepository.RemoveUserById(Convert.ToInt64(User.Identity.Name));
 			return NoContent();
 		}
 
-		[HttpPut("update")] //token zwykly //sprawdzenie uzytkownika
+		[HttpPut("update")]
+		[Authorize]
 		public IActionResult UpdateUser(User user)
 		{
 			var id = Convert.ToInt64(User.Identity.Name);
-			return Ok(_usersRepository.UpdateUser(user));
+			return Ok(_usersRepository.UpdateUser(user, id));
 		}
 	}
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GameWeb.Models;
@@ -22,11 +21,11 @@ namespace GameWeb.Controllers
         }
 
         [HttpGet("genres")]
-		public IActionResult GetGameGenres()
+		public IActionResult GetGameGenres(int page = 0, int limit = 10)
         {
 			try
 			{
-				var result = _gameGenresRepository.GetGenres();
+				var result = _gameGenresRepository.GetGenres(page, limit);
 				return Ok(result);
 			}
 			catch(Exception e)
@@ -36,7 +35,8 @@ namespace GameWeb.Controllers
 		}
 
         [HttpGet("genres/{id}")]
-		public async Task<IActionResult> GetGenre(long id) {
+		public async Task<IActionResult> GetGenre(long id)
+		{
 			try
 			{
 				var result = await _gameGenresRepository.GetGenreById(id);
@@ -78,8 +78,10 @@ namespace GameWeb.Controllers
 
         [HttpDelete("genres/{id}")]
         [Authorize(Policy = Policies.Admin)]
-		public async Task<IActionResult> DeleteGenre(long id) {
-			try{
+		public async Task<IActionResult> DeleteGenre(long id)
+		{
+			try
+			{
 				await _gameGenresRepository.DeleteGenre(id);
 				return NoContent();
 			}

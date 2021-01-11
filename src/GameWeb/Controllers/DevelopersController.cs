@@ -21,11 +21,11 @@ namespace GameWeb.Controllers
         }
 
         [HttpGet("developers")]
-		public IActionResult GetDevelopers()
+		public IActionResult GetDevelopers(int page, int limit = 10)
         {
 			try
 			{
-				var result = _developersRepository.GetDevelopers();
+				var result = _developersRepository.GetDevelopers(page, limit);
 				return Ok(result);
 			}
 			catch(Exception e)
@@ -35,7 +35,8 @@ namespace GameWeb.Controllers
 		}
 
         [HttpGet("developers/{id}")]
-		public async Task<IActionResult> GetDeveloper(long id) {
+		public async Task<IActionResult> GetDeveloper(long id)
+		{
 			try
 			{
 				var result = await _developersRepository.GetDeveloperById(id);
@@ -67,10 +68,10 @@ namespace GameWeb.Controllers
 		{
 			try
 			{
-				var result = await _developersRepository.AddDeveloper(developer);
-				return CreatedAtAction(
-                    nameof(GetDeveloper),
-                    result);
+				return Ok(await _developersRepository.AddDeveloper(developer));
+				//return CreatedAtAction(
+                //    nameof(GetDeveloper),
+                //    result.);
 			}
 			catch(Exception e)
 			{
@@ -80,8 +81,10 @@ namespace GameWeb.Controllers
 
         [HttpDelete("developers/{id}")]
         [Authorize(Policy = Policies.Mod)]
-		public async Task<IActionResult> DeleteDeveloper(long id) {
-			try{
+		public async Task<IActionResult> DeleteDeveloper(long id)
+		{
+			try
+			{
 				await _developersRepository.DeleteDeveloper(id);
 				return NoContent();
 			}

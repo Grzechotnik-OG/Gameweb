@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
-namespace GameWeb.Controllers {
+namespace GameWeb.Controllers
+{
 	[Route("api/v1")]
     [ApiController]
 	public class ReviewsController : ControllerBase
@@ -24,10 +25,11 @@ namespace GameWeb.Controllers {
 
 		[HttpPost("games/{gameId}/reviews")]
         [Authorize]
-		public async Task<IActionResult> AddReview(Review review, long gameId, long userId)
+		public async Task<IActionResult> AddReview(ReviewDTO review, long gameId)
 		{
 			try
 			{
+				long userId = Convert.ToInt64(User.Identity.Name);
 				var result = await _gamesRepository.AddReview(review, gameId, userId);
 				_logger.LogInformation("reached endpoint " + Request.Path);
 				return Ok(result);
@@ -40,11 +42,11 @@ namespace GameWeb.Controllers {
 		}
 
 		[HttpGet("games/{id}/reviews")]
-		public async Task<IActionResult> GetReviewsByGameId(long id)
+		public async Task<IActionResult> GetReviewsByGameId(long id, int page = 0, int limit = 10)
         {
 			try
 			{
-				var result = await _gamesRepository.GetReviewsByGameId(id);
+				var result = await _gamesRepository.GetReviewsByGameId(id, page, limit);
 				_logger.LogError("reached endpoint " + Request.Path);
 				return Ok(result);
 			}
@@ -69,26 +71,33 @@ namespace GameWeb.Controllers {
 			}
 		}
 
-		[HttpPut("games/{gameId}/reviews/{reviewId}")] //sprawdzenie uzytkownika
+		[HttpPut("games/{gameId}/reviews/{reviewId}")]
         [Authorize]
 		public async Task<IActionResult> UpdateReviewById(long reviewId, ReviewUpdateDTO review)
 		{
-			try{
-				return Ok(await _gamesRepository.UpdateReviewById(review, reviewId));
+			try
+			{
+				return Ok(await _gamesRepository.UpdateReviewById(review, reviewId, Convert.ToInt64(User.Identity.Name)));
+			}
+			catch(MethodAccessException){
+				return Forbid();
 			}
 			catch(Exception e){
 				return NotFound(e.Message);
 			}
 		}
 
-		[HttpDelete("games/{gameId}/reviews/{reviewId}")] //sprawdzenie uzytkownika
+		[HttpDelete("games/{gameId}/reviews/{reviewId}")]
         [Authorize]
 		public async Task<IActionResult> DeleteReview(long reviewId)
 		{
 			try
 			{
-				await _gamesRepository.DeleteReviewById(reviewId);
+				await _gamesRepository.DeleteReviewById(reviewId, Convert.ToInt64(User.Identity.Name));
 				return NoContent();
+			}
+			catch(MethodAccessException){
+				return Forbid();
 			}
 			catch(Exception e){
 				return NotFound(e.Message);
