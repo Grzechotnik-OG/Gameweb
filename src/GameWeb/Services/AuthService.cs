@@ -14,15 +14,19 @@ namespace GameWeb.Services
     {
         private readonly JWTConfig _jwtConfig;
         private readonly IUsersRepository _usersRepository;
-        public AuthService(JWTConfig jwtConfig)
+        private readonly Context _context;
+        public AuthService(JWTConfig jwtConfig, IUsersRepository usersRepository, Context context)
         {
             _jwtConfig = jwtConfig;
+            _usersRepository = usersRepository;
+            _context = context;
         }
         public TokenDTO GenerateTokenDTO(User user)
         {
             TokenDTO tokens = new TokenDTO()
             {
-                Token = GenerateToken(user)
+                Token = GenerateToken(user),
+                RefreshToken = GenerateRefreshToken(user).Token
             };
             return tokens;
         }
@@ -34,6 +38,7 @@ namespace GameWeb.Services
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]{
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserId.ToString()),
                 new Claim("role", user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
@@ -52,10 +57,11 @@ namespace GameWeb.Services
             RefreshToken refreshToken = new RefreshToken()
             {
                 Token = GenerateRefreshTokenString(),
-                Expiration = DateTime.Now.AddMinutes(30)
+                Expiration = DateTime.Now.AddMinutes(_jwtConfig.RefreshTokenExpiration),
+                User = user
             };
-            user.RefreshTokens.Add(refreshToken);
-            _usersRepository.UpdateUser(user);
+            _context.RefreshTokens.Add(refreshToken);
+            _context.SaveChanges();
             return refreshToken;
         }
         private static string GenerateRefreshTokenString()
@@ -69,7 +75,7 @@ namespace GameWeb.Services
         public RefreshTokenDTO ExchangeRefreshToken(RefreshTokenDTO message)
         {
             var user = _usersRepository.GetUserByRefreshToken(message.RefreshToken);
-            if (user.RefreshTokens.Any(rt => rt.Token == message.RefreshToken && rt.Expiration <= DateTime.Now))
+            if (user.RefreshTokens.Any(rt => rt.Token.Equals(message.RefreshToken) && rt.Expiration >= DateTime.Now))
             {
                 var jwtToken = GenerateToken(user);
                 var generatedRefreshToken = GenerateRefreshTokenString();
@@ -79,7 +85,7 @@ namespace GameWeb.Services
                 refresh.Expiration = DateTime.Now;
                 refresh.UserId = user.UserId;
                 user.RefreshTokens.Add(refresh);
-                _usersRepository.UpdateUser(user);
+                _usersRepository.UpdateUser(user, user.UserId);
                 RefreshTokenDTO refreshTokenDTO = new RefreshTokenDTO();
                 refreshTokenDTO.Token = jwtToken;
                 refreshTokenDTO.RefreshToken = generatedRefreshToken;
