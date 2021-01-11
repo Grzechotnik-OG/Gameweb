@@ -19,6 +19,14 @@ namespace GameWeb.Models
 			modelBuilder.Entity<Review>()
 				.HasOne(r => r.Game)
 				.WithMany(g => g.Reviews);
+
+			modelBuilder.Entity<Game>()
+				.HasOne(r => r.Developer)
+				.WithMany();
+
+			modelBuilder.Entity<Game>()
+				.HasOne(r => r.Genre)
+				.WithMany();
 		}
 	}
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace GameWeb.Models
 {
     public class GameGenre
