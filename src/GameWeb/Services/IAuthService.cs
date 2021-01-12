@@ -1,4 +1,6 @@
 using GameWeb.Models;
+using GameWeb.Models.DTO;
+using GameWeb.Models.Entities;
 
 namespace GameWeb.Services
 {

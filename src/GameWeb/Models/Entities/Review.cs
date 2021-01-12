@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace GameWeb.Models
+namespace GameWeb.Models.Entities
 {
 	public class Review
 	{

@@ -1,6 +1,6 @@
-namespace GameWeb.Models
+namespace GameWeb.Models.DTO
 {
-    public class RefreshTokenDTO
+    public class TokenDTO
     {
         public string Token { get; set; }
         public string RefreshToken { get; set; }

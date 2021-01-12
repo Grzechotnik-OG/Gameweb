@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameWeb.Models;
+using GameWeb.Models.DTO;
+using GameWeb.Models.Entities;
 
 namespace GameWeb.Repositories
 {

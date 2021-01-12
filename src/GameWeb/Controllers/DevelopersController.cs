@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using GameWeb.Models;
+using GameWeb.Models.DTO;
 using GameWeb.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

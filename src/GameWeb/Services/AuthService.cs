@@ -5,6 +5,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using GameWeb.Models;
+using GameWeb.Models.DTO;
+using GameWeb.Models.Entities;
 using GameWeb.Repositories;
 using Microsoft.IdentityModel.Tokens;
 

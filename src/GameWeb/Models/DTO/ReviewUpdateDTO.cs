@@ -1,9 +1,6 @@
-using System;
-using System.Text.Json.Serialization;
-
-namespace GameWeb.Models
+namespace GameWeb.Models.DTO
 {
-	public class ReviewDTO
+	public class ReviewUpdateDTO
 	{
 		public string Title { get; set; }
 		public string Description { get; set; }

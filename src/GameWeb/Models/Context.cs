@@ -1,4 +1,5 @@
 using System;
+using GameWeb.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameWeb.Models

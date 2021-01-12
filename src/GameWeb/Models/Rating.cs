@@ -1,4 +1,4 @@
-using System;
+using GameWeb.Models.Entities;
 
 namespace GameWeb.Models {
 	public class Rating {

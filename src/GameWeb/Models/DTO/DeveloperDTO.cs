@@ -1,6 +1,4 @@
-using System;
-
-namespace GameWeb.Models
+namespace GameWeb.Models.DTO
 {
     public class DeveloperDTO
     {

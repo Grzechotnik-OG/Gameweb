@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace GameWeb.Models {
+namespace GameWeb.Models.Entities
+{
 	public class User
 	{
 		public long UserId { get; set; }

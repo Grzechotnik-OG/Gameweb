@@ -1,5 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
+using GameWeb.Models.Entities;
+
 namespace GameWeb.Models
 {
 	public class RefreshToken

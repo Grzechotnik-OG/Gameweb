@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace GameWeb.Models
+namespace GameWeb.Models.Entities
 {
 	public class Developer
 	{

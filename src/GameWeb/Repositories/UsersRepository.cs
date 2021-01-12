@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameWeb.Models;
 using Microsoft.EntityFrameworkCore;
+using GameWeb.Models.DTO;
+using GameWeb.Models.Entities;
 
 namespace GameWeb.Repositories
 {

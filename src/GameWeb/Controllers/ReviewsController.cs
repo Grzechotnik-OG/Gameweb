@@ -5,6 +5,7 @@ using GameWeb.Repositories;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using GameWeb.Models.DTO;
 
 namespace GameWeb.Controllers
 {

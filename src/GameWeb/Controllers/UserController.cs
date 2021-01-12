@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using GameWeb.Services;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using GameWeb.Models.Entities;
+using GameWeb.Models.DTO;
 
 namespace GameWeb.Controllers
 {
