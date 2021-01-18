@@ -41,7 +41,9 @@ namespace GameWeb.Tests
                         Helper.InitializeDbForTests(context);
                     }
                     catch (Exception)
-                    {}
+                    {
+
+                    }
                 }
             });
         }
