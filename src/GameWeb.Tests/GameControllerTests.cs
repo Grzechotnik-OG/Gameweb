@@ -24,6 +24,11 @@ namespace GameWeb.Tests
         public GameControllerTests(
             CustomWebApplicationFactory<Startup> factory)
         {
+            System.Environment.SetEnvironmentVariable("JwtSecret", "SWRlYWx5IHNhIGphayBnd2lhemR5IC0gbmllIG1vem5hIGljaCBvc2lhZ25hYywgYWxlIG1vem5hIHNpZSBuaW1pIGtpZXJvd2FjLg0K");
+            System.Environment.SetEnvironmentVariable("JwtIssuer", "https://localhost:5001/");
+            System.Environment.SetEnvironmentVariable("JwtAudience", "https://localhost:5001/");
+            System.Environment.SetEnvironmentVariable("JwtAccessTokenExpiration" , "5");
+            System.Environment.SetEnvironmentVariable("JwtRefreshTokenExpiration" , "20");
             _factory = factory;
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
                 {

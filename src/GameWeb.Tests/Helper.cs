@@ -38,12 +38,6 @@ namespace GameWeb.Tests
             context.Add<Game>(game);
             context.SaveChanges();
 
-            var salt = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-
             User entityUser = new User()
             {
                 UserName = "Moderator",
