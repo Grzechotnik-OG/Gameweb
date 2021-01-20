@@ -12,8 +12,6 @@ namespace GameWeb.Models.Entities
 		[JsonIgnore]
 		public string PasswordHash { get; set; }
 		[JsonIgnore]
-		public byte[] Salt { get; set; }
-		[JsonIgnore]
 		public string Role { get; set; }
 		[JsonIgnore]
 		public List<RefreshToken> RefreshTokens {get; set;}

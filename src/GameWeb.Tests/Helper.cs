@@ -43,14 +43,12 @@ namespace GameWeb.Tests
             {
                 rng.GetBytes(salt);
             }
-            string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2("haslo123", salt, KeyDerivationPrf.HMACSHA1, 10000, 256/8));
 
             User entityUser = new User()
             {
                 UserName = "Moderator",
                 Email = "test@test.com",
-                Salt = salt,
-                PasswordHash = hashedPwd,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("haslo123"),
                 Role = "Mod"
             };
             context.Add<User>(entityUser);
@@ -60,8 +58,7 @@ namespace GameWeb.Tests
             {
                 UserName = "Regular",
                 Email = "testUser@test.com",
-                Salt = salt,
-                PasswordHash = hashedPwd,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("haslo123"),
                 Role = "User"
             };
             context.Add<User>(regularUser);

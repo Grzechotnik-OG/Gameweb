@@ -1,6 +1,4 @@
 using System;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Linq;
 using System.Threading.Tasks;
 using GameWeb.Models;
@@ -29,14 +27,16 @@ namespace GameWeb.Repositories
             {
                 return false;
             }
-            string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2(login.Password,user.Salt,KeyDerivationPrf.HMACSHA1,10000, 256/8));
-            if(hashedPwd == user.PasswordHash){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash);
+            //string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2(login.Password,user.Salt,KeyDerivationPrf.HMACSHA1,10000, 256/8));
+            //if(hashedPwd == user.PasswordHash){
+            //    return true;
+            //}
+            //else{
+            //    return false;
+            //}
         }
+
         public async Task<User> GetUserById(long id)
         {
             var result = await _context.Users.FindAsync(id);
@@ -66,6 +66,7 @@ namespace GameWeb.Repositories
             }
             return result.User;
         }
+
         public async Task<long> AddUser(UserSignUpDTO user)
         {
             var userInDb =_context.Users.Where(x => x.UserName.Equals(user.UserName) || x.Email.Equals(user.Email)).FirstOrDefault();
@@ -73,18 +74,13 @@ namespace GameWeb.Repositories
             {
                 throw new Exception("User already exists"); // coś tu nie do końca działa
             }
-            var salt = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-            string hashedPwd = Convert.ToBase64String(KeyDerivation.Pbkdf2(user.Password, salt, KeyDerivationPrf.HMACSHA1, 10000, 256/8));
+
+            string hashedPwd = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
             User entityUser = new User()
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Salt = salt,
                 PasswordHash = hashedPwd,
                 Role = "User"
             };
