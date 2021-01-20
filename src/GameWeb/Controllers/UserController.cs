@@ -44,13 +44,14 @@ namespace GameWeb.Controllers
 			if(!ModelState.IsValid) return BadRequest(ModelState);
 			return Ok(_authService.ExchangeRefreshToken(refreshToken));
 		}
-
+		
+		[AllowAnonymous]
 		[HttpPost("signUp")]
-		public IActionResult SignUp([FromBody]UserSignUpDTO user)
+		public async Task<IActionResult> SignUp([FromBody]UserSignUpDTO user)
 		{
 			try
 			{
-				return Ok(_usersRepository.AddUser(user));
+				return Ok(await _usersRepository.AddUser(user));
 			}
 			catch(Exception e)
 			{

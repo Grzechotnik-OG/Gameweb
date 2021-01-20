@@ -55,6 +55,17 @@ namespace GameWeb.Tests
             };
             context.Add<User>(entityUser);
             context.SaveChanges();
+
+            User regularUser = new User()
+            {
+                UserName = "Regular",
+                Email = "testUser@test.com",
+                Salt = salt,
+                PasswordHash = hashedPwd,
+                Role = "User"
+            };
+            context.Add<User>(regularUser);
+            context.SaveChanges();
         }
     }
 }
