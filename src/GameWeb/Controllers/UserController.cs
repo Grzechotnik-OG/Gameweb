@@ -25,7 +25,9 @@ namespace GameWeb.Controllers
 			_usersRepository = usersRepository;
 			_authService = authService;
         }
-
+		///<summary>
+		///Login as a user
+		///</summary>
 		[HttpPost("login")]
 		public IActionResult SignIn(LoginDTO login)
 		{
@@ -37,6 +39,9 @@ namespace GameWeb.Controllers
 			return Ok(_authService.GenerateTokenDTO(user));
 		}
 
+		///<summary>
+		///Refreshes access token
+		///</summary>
 		[Authorize(Policy = Policies.RefreshToken)]
 		[HttpGet("refresh-token")]
 		public IActionResult Refresh()

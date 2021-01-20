@@ -62,7 +62,7 @@ namespace GameWeb.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-
+		
 		[HttpPut("games/{id}")]
 		[Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> UpdateGameInfo(long id, GameDTO game)

@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using GameWeb.Models;
 using GameWeb.Repositories;
@@ -41,7 +43,11 @@ namespace GameWeb
             services.AddScoped<IGameGenresRepository, GameGenresRepository>();
             services.AddScoped<IDevelopersRepository, DevelopersRepository>();
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerGen(c =>{
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddSingleton<JWTConfig>(jwtConfig);
@@ -87,8 +93,12 @@ namespace GameWeb
 
             app.UseAuthorization();
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+
+            });
 
             app.UseEndpoints(endpoints =>
             {
