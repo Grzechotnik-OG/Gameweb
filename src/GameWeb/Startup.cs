@@ -68,6 +68,7 @@ namespace GameWeb
                 config.AddPolicy(Policies.Admin, Policies.AdminPolicy());
                 config.AddPolicy(Policies.User, Policies.UserPolicy());
                 config.AddPolicy(Policies.Mod, Policies.ModPolicy());
+                config.AddPolicy(Policies.RefreshToken, Policies.RefreshTokenPolicy());
             });
         }
 

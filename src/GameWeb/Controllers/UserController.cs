@@ -7,6 +7,7 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using GameWeb.Models.Entities;
 using GameWeb.Models.DTO;
+using System.Linq;
 
 namespace GameWeb.Controllers
 {
@@ -33,18 +34,19 @@ namespace GameWeb.Controllers
 				return Unauthorized();
 			}
 			var user = _usersRepository.GetUserByUserName(login.UserName);
-			_authService.GenerateRefreshToken(user);
 			return Ok(_authService.GenerateTokenDTO(user));
 		}
 
-		[AllowAnonymous]
-		[HttpPost("refresh-token")]
-		public IActionResult Refresh([FromBody] RefreshTokenDTO refreshToken)
+		[Authorize(Policy = Policies.RefreshToken)]
+		[HttpGet("refresh-token")]
+		public IActionResult Refresh()
 		{
+			long userId = Convert.ToInt64(User.Identity.Name);
+			string role = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
 			if(!ModelState.IsValid) return BadRequest(ModelState);
-			return Ok(_authService.ExchangeRefreshToken(refreshToken));
+			return Ok(_authService.ExchangeToken(userId,role));
 		}
-		
+
 		[AllowAnonymous]
 		[HttpPost("signUp")]
 		public async Task<IActionResult> SignUp([FromBody]UserSignUpDTO user)
@@ -63,15 +65,6 @@ namespace GameWeb.Controllers
 		public async Task<IActionResult> GetUser(long id)
 		{
 			return Ok(await _usersRepository.GetUserById(id));
-		}
-
-		[HttpPost("logout")]
-		[Authorize]
-		public IActionResult Logout()
-		{
-			var userName = Convert.ToInt64(User.Identity.Name);
-    		_authService.RemoveRefreshTokenById(userName);
-			return Ok();
 		}
 
 		[HttpDelete("delete")]
