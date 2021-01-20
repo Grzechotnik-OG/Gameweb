@@ -18,7 +18,12 @@
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "JwtSecret" : "SWRlYWx5IHNhIGphayBnd2lhemR5IC0gbmllIG1vem5hIGljaCBvc2lhZ25hYywgYWxlIG1vem5hIHNpZSBuaW1pIGtpZXJvd2FjLg0K",
+                "JwtIssuer" : "https://localhost:5001/",
+                "JwtAudience" : "https://localhost:5001/",
+                "JwtAccessTokenExpiration" : "5",
+                "JwtRefreshTokenExpiration" : "20"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

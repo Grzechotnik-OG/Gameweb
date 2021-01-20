@@ -28,11 +28,11 @@ namespace GameWeb
         {
             JWTConfig jwtConfig = new JWTConfig() //Zrób to inaczej
             {
-                AccessTokenExpiration = 5,
-                RefreshTokenExpiration = 10,
-                Issuer = "https://localhost:5001/",
-                Audience = "https://localhost:5001/",
-                Secret = "SWRlYWx5IHNhIGphayBnd2lhemR5IC0gbmllIG1vem5hIGljaCBvc2lhZ25hYywgYWxlIG1vem5hIHNpZSBuaW1pIGtpZXJvd2FjLg0K"
+                AccessTokenExpiration = Convert.ToInt32(Environment.GetEnvironmentVariable("JwtAccessTokenExpiration")),
+                RefreshTokenExpiration = Convert.ToInt32(Environment.GetEnvironmentVariable("JwtRefreshTokenExpiration")),
+                Issuer = Environment.GetEnvironmentVariable("JwtIssuer"),
+                Audience = Environment.GetEnvironmentVariable("JwtAudience"),
+                Secret = Environment.GetEnvironmentVariable("JwtSecret")
             };
             services.AddControllers();
 
