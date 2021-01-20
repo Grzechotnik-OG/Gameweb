@@ -28,6 +28,7 @@ namespace GameWeb.Controllers
 		///<summary>
 		///Login as a user
 		///</summary>
+		///<param name ="login">Username and Password to account</param>
 		[HttpPost("login")]
 		public IActionResult SignIn(LoginDTO login)
 		{
@@ -51,7 +52,9 @@ namespace GameWeb.Controllers
 			if(!ModelState.IsValid) return BadRequest(ModelState);
 			return Ok(_authService.ExchangeToken(userId,role));
 		}
-
+		///<summary>
+		///Registers new user
+		///</summary>
 		[AllowAnonymous]
 		[HttpPost("signUp")]
 		public async Task<IActionResult> SignUp([FromBody]UserSignUpDTO user)
@@ -65,22 +68,29 @@ namespace GameWeb.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-
+		///<summary>
+		///Returns user by Id
+		///</summary>
+		///<param name ="id">User Id</param>
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetUser(long id)
 		{
 			return Ok(await _usersRepository.GetUserById(id));
 		}
 
+		///<summary>
+		///Removes user
+		///</summary>
 		[HttpDelete("delete")]
 		[Authorize]
 		public IActionResult Delete()
 		{
-			//Logout();
 			_usersRepository.RemoveUserById(Convert.ToInt64(User.Identity.Name));
 			return NoContent();
 		}
-
+		///<summary>
+		///Updates user
+		///</summary>
 		[HttpPut("update")]
 		[Authorize]
 		public IActionResult UpdateUser(User user)

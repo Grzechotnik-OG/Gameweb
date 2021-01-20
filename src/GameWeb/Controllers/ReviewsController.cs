@@ -24,6 +24,11 @@ namespace GameWeb.Controllers
 			_logger = logger;
         }
 
+		///<summary>
+		///Adds new review to a game
+		///</summary>
+		///<param name ="gameId">Id of a game</param>
+		///<param name ="review">New review</param>
 		[HttpPost("games/{gameId}/reviews")]
         [Authorize]
 		public async Task<IActionResult> AddReview(ReviewDTO review, long gameId)
@@ -42,6 +47,12 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Returns list of game reviews
+		///</summary>
+		///<param name ="id">Id of a game</param>
+		///<param name ="page">Nr of page</param>
+		///<param name ="limit">Limit of objects for one page</param>
 		[HttpGet("games/{id}/reviews")]
 		public async Task<IActionResult> GetReviewsByGameId(long id, int page = 0, int limit = 10)
         {
@@ -58,6 +69,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Returns game review by Id
+		///</summary>
+		///<param name ="id">Id of a review</param>
 		[HttpGet("games/{gameId}/reviews/{id}")]
 		public async Task<IActionResult> GetReviewById(long id)
         {
@@ -72,6 +87,11 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Updates existing review by Id
+		///</summary>
+		///<param name ="reviewId">Id of a review</param>
+		///<param name ="review">Modified review</param>
 		[HttpPut("games/{gameId}/reviews/{reviewId}")]
         [Authorize]
 		public async Task<IActionResult> UpdateReviewById(long reviewId, ReviewUpdateDTO review)
@@ -88,6 +108,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Deletes existing review by Id
+		///</summary>
+		///<param name ="reviewId">Id of a review</param>
 		[HttpDelete("games/{gameId}/reviews/{reviewId}")]
         [Authorize]
 		public async Task<IActionResult> DeleteReview(long reviewId)

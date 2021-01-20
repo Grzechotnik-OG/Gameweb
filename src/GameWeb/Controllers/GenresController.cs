@@ -20,6 +20,11 @@ namespace GameWeb.Controllers
 			_gameGenresRepository = gameGenresRepository;
         }
 
+		///<summary>
+		///Return all available genres
+		///</summary>
+		///<param name ="page">Nr of page</param>
+		///<param name ="limit">Limit of objects for one page</param>
         [HttpGet("genres")]
 		public IActionResult GetGameGenres(int page = 0, int limit = 10)
         {
@@ -34,6 +39,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Returns one existing genre by Id
+		///</summary>
+		///<param name ="id">Id of a genre</param>
         [HttpGet("genres/{id}")]
 		public async Task<IActionResult> GetGenre(long id)
 		{
@@ -48,6 +57,11 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Updates existing genre by Id
+		///</summary>
+		///<param name ="id">Id of a review</param>
+		///<param name ="name">New genre name</param>
         [HttpPut("genres/{id}")]
         [Authorize(Policy = Policies.Admin)]
 		public async Task<IActionResult> UpdateGenreName(long id, string name)
@@ -62,6 +76,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Adds new genre
+		///</summary>
+		///<param name ="name">Name of a new genre</param>
         [HttpPost("genres")]
         [Authorize(Policy = Policies.Admin)]
 		public async Task<IActionResult> AddGenre(string name)
@@ -76,6 +94,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Deletes genre by Id
+		///</summary>
+		///<param name ="id">Id of a genre</param>
         [HttpDelete("genres/{id}")]
         [Authorize(Policy = Policies.Admin)]
 		public async Task<IActionResult> DeleteGenre(long id)

@@ -21,6 +21,11 @@ namespace GameWeb.Controllers
 			_developersRepository = developersRepository;
         }
 
+		///<summary>
+		///Returns list of all developers
+		///</summary>
+		///<param name ="page">Nr of page</param>
+		///<param name ="limit">Limit of objects for one page</param>
         [HttpGet("developers")]
 		public IActionResult GetDevelopers(int page, int limit = 10)
         {
@@ -35,6 +40,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Returns one developer by Id
+		///</summary>
+		///<param name ="id">Id of a developer</param>
         [HttpGet("developers/{id}")]
 		public async Task<IActionResult> GetDeveloper(long id)
 		{
@@ -49,6 +58,11 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Updates existing developer
+		///</summary>
+		///<param name ="id">Id of a developer</param>
+		///<param name ="developer">New developer info</param>
         [HttpPut("developers/{id}")]
         [Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> UpdateDeveloperInfo(long id, [FromBody]DeveloperDTO developer)
@@ -63,6 +77,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Adds new developer
+		///</summary>
+		///<param name ="developer">New developer</param>
         [HttpPost("developers")]
         [Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> AddDeveloper([FromBody]DeveloperDTO developer)
@@ -70,9 +88,6 @@ namespace GameWeb.Controllers
 			try
 			{
 				return Ok(await _developersRepository.AddDeveloper(developer));
-				//return CreatedAtAction(
-                //    nameof(GetDeveloper),
-                //    result.);
 			}
 			catch(Exception e)
 			{
@@ -80,6 +95,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Deletes existing developer
+		///</summary>
+		///<param name ="id">Id of a developer</param>
         [HttpDelete("developers/{id}")]
         [Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> DeleteDeveloper(long id)

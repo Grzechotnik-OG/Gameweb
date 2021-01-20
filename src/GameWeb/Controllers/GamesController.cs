@@ -21,6 +21,10 @@ namespace GameWeb.Controllers
 			_gamesRepository = gamesRepository;
         }
 
+		///<summary>
+		///Returns game by Id
+		///</summary>
+		///<param name ="id">Id of a game</param>
 		[HttpGet("games/{id}")]
 		public async Task<IActionResult> GetGame(long id)
 		{
@@ -35,6 +39,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Returns list of games by genre type
+		///</summary>
+		///<param name ="genreId">Id of a genre</param>
 		[HttpGet("games/genres/{genreId}")]
 		public async Task<IActionResult> SearchByGenre(long genreId)
 		{
@@ -49,6 +57,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Adds new game
+		///</summary>
+		///<param name ="game">New game info</param>
 		[HttpPost("games")]
 		[Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> AddGame(GameDTO game)
@@ -62,7 +74,12 @@ namespace GameWeb.Controllers
 				return BadRequest(e.Message);
 			}
 		}
-		
+
+		///<summary>
+		///Updates existing game
+		///</summary>
+		///<param name ="id">Id of a game</param>
+		///<param name ="game">Updated game info</param>
 		[HttpPut("games/{id}")]
 		[Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> UpdateGameInfo(long id, GameDTO game)
@@ -76,6 +93,10 @@ namespace GameWeb.Controllers
 			}
 		}
 
+		///<summary>
+		///Deletes existing game
+		///</summary>
+		///<param name ="id">Id of a game</param>
 		[HttpDelete("games/{id}")]
 		[Authorize(Policy = Policies.Mod)]
 		public async Task<IActionResult> DeleteGame(long id)
